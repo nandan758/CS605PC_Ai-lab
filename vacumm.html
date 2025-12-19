@@ -1,0 +1,39 @@
+from IPython.display import display, HTML
+
+class VacuumEnvironment:
+    def __init__(self, rooms, start_location):
+        self.rooms = rooms
+        self.location = start_location
+
+    def percept(self):
+        return (self.location, self.rooms[self.location])
+
+    def execute(self, action):
+        if action == 'Suck':
+            self.rooms[self.location] = 'Clean'
+        elif action == 'Right':
+            self.location = 'B'
+        elif action == 'Left':
+            self.location = 'A'
+
+    def render(self, action=None):
+        html = f"""
+        <h3>Vacuum World</h3>
+        <table border="1" cellpadding="10">
+            <tr>
+                <th>Room</th>
+                <th>Status</th>
+            </tr>
+            <tr style="background-color:{'lightgreen' if self.location == 'A' else 'white'}">
+                <td>A</td>
+                <td>{self.rooms['A']}</td>
+            </tr>
+            <tr style="background-color:{'lightgreen' if self.location == 'B' else 'white'}">
+                <td>B</td>
+                <td>{self.rooms['B']}</td>
+            </tr>
+        </table>
+        <p><strong>Vacuum Location:</strong> {self.location}</p>
+        <p><strong>Last Action:</strong> {action}</p>
+        """
+        display(HTML(html))
