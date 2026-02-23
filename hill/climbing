@@ -1,0 +1,37 @@
+
+Open In Colab
+
+import random
+import math
+
+CITIES = [(0, 0), (1, 3), (4, 3), (6, 1)]
+
+def cost(route):
+    return sum(
+        math.dist(route[i], route[(i + 1) % len(route)])
+        for i in range(len(route))
+    )
+
+def hill_climbing():
+    route = random.sample(CITIES, len(CITIES))
+
+    while True:
+        neighbors = [
+            route[:i] + [route[j]] + route[i+1:j] + [route[i]] + route[j+1:]
+            for i in range(len(route))
+            for j in range(i + 1, len(route))
+        ]
+
+        best = min(neighbors, key=cost)
+
+        if cost(best) >= cost(route):
+            print("Best route:", route)
+            print("Cost:", cost(route))
+            return
+
+        route = best
+
+hill_climbing()
+     
+Best route: [(0, 0), (6, 1), (4, 3), (1, 3)]
+Cost: 15.073467315212788
